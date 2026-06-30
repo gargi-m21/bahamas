@@ -1,0 +1,59 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --color-bg: #0b0e14;
+  --color-surface: #12161f;
+  --color-surface-raised: #1a2030;
+  --color-border: #232a3a;
+  --color-text-primary: #e8eaf0;
+  --color-text-muted: #8b93a7;
+
+  --color-optical: #14b8a6;
+  --color-optical-dim: #134e4a;
+  --color-multispectral: #8b5cf6;
+  --color-multispectral-dim: #3b2a64;
+  --color-sar: #f59e0b;
+  --color-sar-dim: #5c3d0a;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  color-scheme: dark;
+}
+
+body {
+  background-color: var(--color-bg);
+  color: var(--color-text-primary);
+  font-family: var(--font-body), ui-sans-serif, system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-optical);
+  outline-offset: 2px;
+}
+
+::selection {
+  background-color: var(--color-optical-dim);
+  color: var(--color-text-primary);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+.font-tabular {
+  font-variant-numeric: tabular-nums;
+}
