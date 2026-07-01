@@ -27,7 +27,7 @@ export function Hero() {
         <p className="mt-6 max-w-2xl text-lg leading-relaxed text-text-muted sm:text-xl">
           Optical, multispectral, and SAR sensors capture the same patch of Earth in incompatible
           ways. PT-JEPA aligns all three into one shared embedding space, so a query in any modality
-          retrieves relevant images from every modality — not just its own.
+          retrieves relevant images from every modality, not just its own.
         </p>
 
         <div className="mt-9 flex flex-wrap items-center gap-4">

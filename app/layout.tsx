@@ -24,7 +24,7 @@ const plexMono = IBM_Plex_Mono({
 });
 
 export const metadata: Metadata = {
-  title: 'PT-JEPA — Cross-Modal Satellite Image Retrieval',
+  title: 'PT-JEPA: Cross-Modal Satellite Image Retrieval',
   description:
     'PT-JEPA: physics-guided joint embedding retrieval across optical, multispectral, and SAR satellite imagery.',
 };

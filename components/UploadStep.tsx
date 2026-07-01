@@ -31,7 +31,7 @@ export function UploadStep({
       </h2>
       <p className="mt-2 max-w-prose text-sm text-text-muted">
         Choose the sensor modality the query was acquired with. The gallery will be searched across
-        all three modalities — same-modal and cross-modal results are ranked together.
+        all three modalities, same-modal and cross-modal results are ranked together.
       </p>
 
       <div className="mt-8">
