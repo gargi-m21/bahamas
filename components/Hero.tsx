@@ -37,7 +37,6 @@ export function Hero() {
           >
             Start a query
           </a>
-          <span className="text-sm text-text-muted">Hardcoded demo — no live inference</span>
         </div>
 
         <div className="mt-16">

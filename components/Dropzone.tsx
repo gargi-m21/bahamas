@@ -80,7 +80,7 @@ export function Dropzone({ previewSrc, onFileSelect }: DropzoneProps) {
             </svg>
           </span>
           <p className="text-sm font-medium text-text-primary">Drag and drop a query image</p>
-          <p className="text-xs text-text-muted">or click to browse — used only for this preview, never uploaded</p>
+          <p className="text-xs text-text-muted">or click to browse</p>
         </div>
       )}
     </div>

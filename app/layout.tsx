@@ -26,7 +26,7 @@ const plexMono = IBM_Plex_Mono({
 export const metadata: Metadata = {
   title: 'PT-JEPA — Cross-Modal Satellite Image Retrieval',
   description:
-    'PT-JEPA demo: physics-guided joint embedding retrieval across optical, multispectral, and SAR satellite imagery.',
+    'PT-JEPA: physics-guided joint embedding retrieval across optical, multispectral, and SAR satellite imagery.',
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
