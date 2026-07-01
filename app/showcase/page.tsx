@@ -14,11 +14,11 @@ export default function ShowcasePage() {
           <span className="font-display font-semibold text-base tracking-tight">PT-JEPA</span>
           <span className="w-px h-4 bg-border" />
           <div className="flex items-center gap-2.5">
-            <Pill color="sar" label="SAR" />
+            <Pill color="multispectral" label="Multispectral" />
             <svg viewBox="0 0 22 8" className="w-5 h-2 text-text-muted" fill="none" aria-hidden="true">
               <path d="M0 4h19M14 1l5 3-5 3" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
-            <Pill color="multispectral" label="Multispectral" />
+            <Pill color="sar" label="SAR" />
           </div>
           <span className="text-xs text-text-muted">Cross-Modal Retrieval</span>
         </div>
@@ -38,11 +38,11 @@ export default function ShowcasePage() {
           {/* Query image */}
           <div className="shrink-0 flex flex-col gap-3">
             <p className="text-[10px] font-mono uppercase tracking-[0.15em] text-text-muted">Query Image</p>
-            <div className="relative rounded-2xl overflow-hidden ring-2 ring-sar/70 bg-surface" style={{ width: 280, height: 280 }}>
+            <div className="relative rounded-2xl overflow-hidden ring-2 ring-multispectral/70 bg-surface" style={{ width: 280, height: 280 }}>
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={QUERY_IMAGE} alt="SAR query" className="w-full h-full object-contain" />
+              <img src={QUERY_IMAGE} alt="Multispectral query" className="w-full h-full object-contain" />
               <div className="absolute bottom-2.5 left-2.5">
-                <Pill color="sar" label="SAR" />
+                <Pill color="multispectral" label="Multispectral" />
               </div>
             </div>
           </div>
@@ -51,19 +51,19 @@ export default function ShowcasePage() {
           <div className="flex flex-col gap-5 pt-7">
             <div className="space-y-2">
               <p className="text-xs font-mono uppercase tracking-widest text-text-muted">Sensor</p>
-              <p className="text-text-primary font-mono text-sm">Sentinel-1 GRD</p>
+              <p className="text-text-primary font-mono text-sm">Sentinel-2 MSI</p>
             </div>
             <div className="space-y-2">
-              <p className="text-xs font-mono uppercase tracking-widest text-text-muted">Polarization</p>
-              <p className="text-text-primary font-mono text-sm">VV · VH</p>
+              <p className="text-xs font-mono uppercase tracking-widest text-text-muted">Bands</p>
+              <p className="text-text-primary font-mono text-sm">13 spectral bands</p>
             </div>
             <div className="space-y-2">
               <p className="text-xs font-mono uppercase tracking-widest text-text-muted">GSD</p>
-              <p className="text-text-primary font-mono text-sm">5 m / px</p>
+              <p className="text-text-primary font-mono text-sm">10 m / px</p>
             </div>
             <div className="space-y-2">
               <p className="text-xs font-mono uppercase tracking-widest text-text-muted">Preprocessing</p>
-              <p className="text-text-primary font-mono text-sm">DT-CWT + log-ratio · physics indices</p>
+              <p className="text-text-primary font-mono text-sm">Band projection · affine normalization</p>
             </div>
           </div>
         </div>
@@ -72,7 +72,7 @@ export default function ShowcasePage() {
         <div className="shrink-0 flex items-center gap-4">
           <div className="flex-1 h-px bg-border/50" />
           <p className="text-[10px] font-mono uppercase tracking-[0.15em] text-text-muted whitespace-nowrap">
-            Top-5 Retrieved Results · Sentinel-2 Multispectral · 13-band false-colour
+            Top-5 Retrieved Results · Sentinel-1 SAR · VV+VH · Cross-Modal Gallery
           </p>
           <div className="flex-1 h-px bg-border/50" />
         </div>
@@ -83,7 +83,7 @@ export default function ShowcasePage() {
             <div key={i} className="flex-1 min-w-0 flex flex-col gap-3">
 
               {/* Image — fills all remaining height, aspect-square */}
-              <div className="relative flex-1 min-h-0 rounded-2xl overflow-hidden ring-1 ring-multispectral/50 bg-surface">
+              <div className="relative flex-1 min-h-0 rounded-2xl overflow-hidden ring-1 ring-sar/50 bg-surface">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src={src}
@@ -106,9 +106,9 @@ export default function ShowcasePage() {
 
               {/* Score bar + badge */}
               <div className="shrink-0 flex items-center gap-2">
-                <Pill color="multispectral" label="MS" small />
+                <Pill color="sar" label="SAR" small />
                 <div className="flex-1 h-1 rounded-full bg-surface-raised overflow-hidden">
-                  <div className="h-full rounded-full bg-multispectral" style={{ width: `${Math.round(SCORES[i] * 100)}%` }} />
+                  <div className="h-full rounded-full bg-sar" style={{ width: `${Math.round(SCORES[i] * 100)}%` }} />
                 </div>
                 <span className="text-[10px] font-mono text-text-muted tabular-nums">{Math.round(SCORES[i] * 100)}%</span>
               </div>
