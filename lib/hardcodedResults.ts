@@ -1,17 +1,10 @@
-import type { Modality, ResultItem } from './types';
+import type { Modality, RetrievalDirection, ResultItem } from './types';
 import { QUERY_IMAGE, RESULT_IMAGES } from './showcaseImages';
 import { SAME_QUERY_IMAGE, SAME_RESULT_IMAGES } from './showcaseSameImages';
+import { MOCK_RESULTS } from './mockResults';
 
 const CROSS_SCORES = [0.937, 0.921, 0.904, 0.887, 0.863];
 const SAME_SCORES  = [1.000, 0.963, 0.951, 0.938, 0.922];
-
-const CAPTIONS = [
-  'Agricultural mosaic, mixed crops',
-  'Urban settlement fringe',
-  'Coniferous forest stand',
-  'River delta floodplain',
-  'Irrigated cropland block',
-];
 
 export const CROSS_RESULTS: ResultItem[] = RESULT_IMAGES.map((src, i) => ({
   id: `cross-r${i + 1}`,
@@ -20,7 +13,7 @@ export const CROSS_RESULTS: ResultItem[] = RESULT_IMAGES.map((src, i) => ({
   similarityScore: CROSS_SCORES[i],
   thumbnail: src,
   relevant: true,
-  caption: CAPTIONS[i],
+  caption: '',
 }));
 
 export const SAME_RESULTS: ResultItem[] = SAME_RESULT_IMAGES.map((src, i) => ({
@@ -30,28 +23,30 @@ export const SAME_RESULTS: ResultItem[] = SAME_RESULT_IMAGES.map((src, i) => ({
   similarityScore: SAME_SCORES[i],
   thumbnail: src,
   relevant: true,
-  caption: CAPTIONS[i],
+  caption: '',
 }));
 
-// Fingerprint: take 100 chars of base64 payload after the comma separator.
-// Robust to any MIME type in the data URI header.
-function fingerprint(dataUri: string): string {
-  const comma = dataUri.indexOf(',');
-  if (comma === -1) return '';
-  return dataUri.slice(comma + 1, comma + 101);
-}
+export const DIRECTION_QUERY_MODALITY: Record<RetrievalDirection, Modality> = {
+  'optical-optical': 'optical',
+  'sar-sar':         'sar',
+  'ms-ms':           'multispectral',
+  'optical-sar':     'optical',
+  'sar-optical':     'sar',
+  'optical-ms':      'optical',
+  'ms-optical':      'multispectral',
+  'ms-sar':          'multispectral',
+  'sar-ms':          'sar',
+};
 
-const CROSS_FINGER = fingerprint(QUERY_IMAGE);
-const SAME_FINGER  = fingerprint(SAME_QUERY_IMAGE);
+// Pre-loaded query images for the two hardcoded directions
+export const HARDCODED_QUERY_IMAGES: Partial<Record<RetrievalDirection, string>> = {
+  'sar-sar': SAME_QUERY_IMAGE,
+  'ms-sar':  QUERY_IMAGE,
+};
 
-export interface HardcodedDetection {
-  results: ResultItem[];
-  queryModality: Modality;
-}
-
-export function detectHardcoded(dataUri: string): HardcodedDetection | null {
-  const fp = fingerprint(dataUri);
-  if (fp === CROSS_FINGER) return { results: CROSS_RESULTS, queryModality: 'multispectral' };
-  if (fp === SAME_FINGER)  return { results: SAME_RESULTS,  queryModality: 'sar' };
-  return null;
+export function getResultsForDirection(dir: RetrievalDirection): ResultItem[] {
+  if (dir === 'sar-sar') return SAME_RESULTS;
+  if (dir === 'ms-sar')  return CROSS_RESULTS;
+  const queryModality = DIRECTION_QUERY_MODALITY[dir];
+  return MOCK_RESULTS[queryModality].slice(0, 5);
 }

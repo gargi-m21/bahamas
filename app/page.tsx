@@ -1,9 +1,12 @@
 'use client';
 
 import { useCallback, useState } from 'react';
-import type { Modality, ResultItem } from '@/lib/types';
-import { MOCK_RESULTS } from '@/lib/mockResults';
-import { detectHardcoded } from '@/lib/hardcodedResults';
+import type { RetrievalDirection, RetrievalType, ResultItem } from '@/lib/types';
+import {
+  DIRECTION_QUERY_MODALITY,
+  HARDCODED_QUERY_IMAGES,
+  getResultsForDirection,
+} from '@/lib/hardcodedResults';
 import { Hero } from '@/components/Hero';
 import { UploadStep } from '@/components/UploadStep';
 import { LoadingStep } from '@/components/LoadingStep';
@@ -11,34 +14,43 @@ import { ResultsView } from '@/components/ResultsView';
 
 type Phase = 'idle' | 'loading' | 'results';
 
+const DEFAULT_DIRECTION: RetrievalDirection = 'sar-sar';
+
 export default function Page() {
   const [phase, setPhase] = useState<Phase>('idle');
-  const [previewSrc, setPreviewSrc] = useState<string | null>(null);
-  const [modality, setModality] = useState<Modality>('optical');
+  const [retrievalType, setRetrievalType] = useState<RetrievalType>('same');
+  const [direction, setDirection] = useState<RetrievalDirection>(DEFAULT_DIRECTION);
+  const [previewSrc, setPreviewSrc] = useState<string | null>(
+    HARDCODED_QUERY_IMAGES[DEFAULT_DIRECTION] ?? null,
+  );
   const [results, setResults] = useState<ResultItem[]>([]);
-  const [displayModality, setDisplayModality] = useState<Modality>('optical');
+
+  const handleRetrievalTypeChange = useCallback((type: RetrievalType) => {
+    setRetrievalType(type);
+    const defaultDir: RetrievalDirection = type === 'same' ? 'sar-sar' : 'ms-sar';
+    setDirection(defaultDir);
+    setPreviewSrc(HARDCODED_QUERY_IMAGES[defaultDir] ?? null);
+  }, []);
+
+  const handleDirectionChange = useCallback((dir: RetrievalDirection) => {
+    setDirection(dir);
+    setPreviewSrc(HARDCODED_QUERY_IMAGES[dir] ?? null);
+  }, []);
 
   const handleRetrieve = useCallback(() => {
     if (!previewSrc) return;
-    const detected = detectHardcoded(previewSrc);
-    if (detected) {
-      setResults(detected.results);
-      setDisplayModality(detected.queryModality);
-    } else {
-      setResults(MOCK_RESULTS[modality]);
-      setDisplayModality(modality);
-    }
+    setResults(getResultsForDirection(direction));
     setPhase('loading');
-  }, [previewSrc, modality]);
+  }, [previewSrc, direction]);
 
   const handleLoadingComplete = useCallback(() => {
     setPhase('results');
   }, []);
 
   const handleReset = useCallback(() => {
-    setPreviewSrc(null);
+    setPreviewSrc(HARDCODED_QUERY_IMAGES[direction] ?? null);
     setPhase('idle');
-  }, []);
+  }, [direction]);
 
   if (phase === 'loading') {
     return <LoadingStep onComplete={handleLoadingComplete} />;
@@ -48,7 +60,7 @@ export default function Page() {
     return (
       <ResultsView
         queryImage={previewSrc}
-        queryModality={displayModality}
+        queryModality={DIRECTION_QUERY_MODALITY[direction]}
         results={results}
         onReset={handleReset}
       />
@@ -61,8 +73,10 @@ export default function Page() {
       <UploadStep
         previewSrc={previewSrc}
         onFileSelect={setPreviewSrc}
-        modality={modality}
-        onModalityChange={setModality}
+        retrievalType={retrievalType}
+        onRetrievalTypeChange={handleRetrievalTypeChange}
+        direction={direction}
+        onDirectionChange={handleDirectionChange}
         onRetrieve={handleRetrieve}
       />
     </main>
