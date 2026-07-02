@@ -4,7 +4,6 @@ import { useCallback, useState } from 'react';
 import type { RetrievalDirection, RetrievalType, ResultItem } from '@/lib/types';
 import {
   DIRECTION_QUERY_MODALITY,
-  HARDCODED_QUERY_IMAGES,
   getResultsForDirection,
 } from '@/lib/hardcodedResults';
 import { Hero } from '@/components/Hero';
@@ -20,21 +19,18 @@ export default function Page() {
   const [phase, setPhase] = useState<Phase>('idle');
   const [retrievalType, setRetrievalType] = useState<RetrievalType>('same');
   const [direction, setDirection] = useState<RetrievalDirection>(DEFAULT_DIRECTION);
-  const [previewSrc, setPreviewSrc] = useState<string | null>(
-    HARDCODED_QUERY_IMAGES[DEFAULT_DIRECTION] ?? null,
-  );
+  const [previewSrc, setPreviewSrc] = useState<string | null>(null);
   const [results, setResults] = useState<ResultItem[]>([]);
 
   const handleRetrievalTypeChange = useCallback((type: RetrievalType) => {
     setRetrievalType(type);
-    const defaultDir: RetrievalDirection = type === 'same' ? 'sar-sar' : 'ms-sar';
-    setDirection(defaultDir);
-    setPreviewSrc(HARDCODED_QUERY_IMAGES[defaultDir] ?? null);
+    setDirection(type === 'same' ? 'sar-sar' : 'ms-sar');
+    setPreviewSrc(null);
   }, []);
 
   const handleDirectionChange = useCallback((dir: RetrievalDirection) => {
     setDirection(dir);
-    setPreviewSrc(HARDCODED_QUERY_IMAGES[dir] ?? null);
+    setPreviewSrc(null);
   }, []);
 
   const handleRetrieve = useCallback(() => {
@@ -48,9 +44,9 @@ export default function Page() {
   }, []);
 
   const handleReset = useCallback(() => {
-    setPreviewSrc(HARDCODED_QUERY_IMAGES[direction] ?? null);
+    setPreviewSrc(null);
     setPhase('idle');
-  }, [direction]);
+  }, []);
 
   if (phase === 'loading') {
     return <LoadingStep onComplete={handleLoadingComplete} />;
