@@ -1,8 +1,9 @@
 'use client';
 
 import { useCallback, useState } from 'react';
-import type { Modality, TopK } from '@/lib/types';
+import type { Modality, ResultItem } from '@/lib/types';
 import { MOCK_RESULTS } from '@/lib/mockResults';
+import { detectHardcoded } from '@/lib/hardcodedResults';
 import { Hero } from '@/components/Hero';
 import { UploadStep } from '@/components/UploadStep';
 import { LoadingStep } from '@/components/LoadingStep';
@@ -14,12 +15,21 @@ export default function Page() {
   const [phase, setPhase] = useState<Phase>('idle');
   const [previewSrc, setPreviewSrc] = useState<string | null>(null);
   const [modality, setModality] = useState<Modality>('optical');
-  const [topK, setTopK] = useState<TopK>(10);
+  const [results, setResults] = useState<ResultItem[]>([]);
+  const [displayModality, setDisplayModality] = useState<Modality>('optical');
 
   const handleRetrieve = useCallback(() => {
     if (!previewSrc) return;
+    const detected = detectHardcoded(previewSrc);
+    if (detected) {
+      setResults(detected.results);
+      setDisplayModality(detected.queryModality);
+    } else {
+      setResults(MOCK_RESULTS[modality]);
+      setDisplayModality(modality);
+    }
     setPhase('loading');
-  }, [previewSrc]);
+  }, [previewSrc, modality]);
 
   const handleLoadingComplete = useCallback(() => {
     setPhase('results');
@@ -38,10 +48,8 @@ export default function Page() {
     return (
       <ResultsView
         queryImage={previewSrc}
-        queryModality={modality}
-        topK={topK}
-        onTopKChange={setTopK}
-        results={MOCK_RESULTS[modality]}
+        queryModality={displayModality}
+        results={results}
         onReset={handleReset}
       />
     );
@@ -55,8 +63,6 @@ export default function Page() {
         onFileSelect={setPreviewSrc}
         modality={modality}
         onModalityChange={setModality}
-        topK={topK}
-        onTopKChange={setTopK}
         onRetrieve={handleRetrieve}
       />
     </main>

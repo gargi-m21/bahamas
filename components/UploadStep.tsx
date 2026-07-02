@@ -1,6 +1,6 @@
 'use client';
 
-import type { Modality, TopK } from '@/lib/types';
+import type { Modality } from '@/lib/types';
 import { Dropzone } from './Dropzone';
 import { ModalitySelector } from './ModalitySelector';
 
@@ -9,8 +9,6 @@ interface UploadStepProps {
   onFileSelect: (dataUrl: string) => void;
   modality: Modality;
   onModalityChange: (modality: Modality) => void;
-  topK: TopK;
-  onTopKChange: (k: TopK) => void;
   onRetrieve: () => void;
 }
 
@@ -19,8 +17,6 @@ export function UploadStep({
   onFileSelect,
   modality,
   onModalityChange,
-  topK,
-  onTopKChange,
   onRetrieve,
 }: UploadStepProps) {
   return (
@@ -43,26 +39,7 @@ export function UploadStep({
         <ModalitySelector value={modality} onChange={onModalityChange} />
       </div>
 
-      <div className="mt-8 flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
-        <div>
-          <p className="mb-2 text-xs uppercase tracking-wide text-text-muted">Results to render</p>
-          <div className="flex items-center gap-1 rounded-md border border-border p-1" role="group" aria-label="Top-K results">
-            {([5, 10] as TopK[]).map((k) => (
-              <button
-                key={k}
-                type="button"
-                onClick={() => onTopKChange(k)}
-                className={`h-9 min-w-[64px] rounded px-3 font-mono text-sm font-medium transition-colors ${
-                  topK === k ? 'bg-optical-dim text-optical' : 'text-text-muted hover:text-text-primary'
-                }`}
-                aria-pressed={topK === k}
-              >
-                Top-{k}
-              </button>
-            ))}
-          </div>
-        </div>
-
+      <div className="mt-8 flex justify-end">
         <button
           type="button"
           disabled={!previewSrc}

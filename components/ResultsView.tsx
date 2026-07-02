@@ -1,6 +1,6 @@
 'use client';
 
-import type { Modality, ResultItem, TopK } from '@/lib/types';
+import type { Modality, ResultItem } from '@/lib/types';
 import { BENCHMARK_LATENCY_MS } from '@/lib/constants';
 import { ModalityChip } from './ModalityChip';
 import { ResultsGrid } from './ResultsGrid';
@@ -8,8 +8,6 @@ import { ResultsGrid } from './ResultsGrid';
 interface ResultsViewProps {
   queryImage: string;
   queryModality: Modality;
-  topK: TopK;
-  onTopKChange: (k: TopK) => void;
   results: ResultItem[];
   onReset: () => void;
 }
@@ -17,8 +15,8 @@ interface ResultsViewProps {
 const F1_AT_5 = 0.74;
 const F1_AT_10 = 0.81;
 
-export function ResultsView({ queryImage, queryModality, topK, onTopKChange, results, onReset }: ResultsViewProps) {
-  const visibleResults = results.slice(0, topK);
+export function ResultsView({ queryImage, queryModality, results, onReset }: ResultsViewProps) {
+  const visibleResults = results.slice(0, 5);
 
   return (
     <section className="mx-auto w-full max-w-6xl px-4 py-12 sm:px-6">
@@ -56,7 +54,7 @@ export function ResultsView({ queryImage, queryModality, topK, onTopKChange, res
         </button>
       </div>
 
-      <div className="mt-8 flex flex-wrap items-center justify-between gap-6 border-y border-border py-4">
+      <div className="mt-8 flex flex-wrap items-center gap-6 border-y border-border py-4">
         <dl className="flex flex-wrap gap-x-8 gap-y-3">
           <Metric label="F1@5" value={F1_AT_5.toFixed(2)} />
           <Metric label="F1@10" value={F1_AT_10.toFixed(2)} />
@@ -70,22 +68,6 @@ export function ResultsView({ queryImage, queryModality, topK, onTopKChange, res
             </p>
           </div>
         </dl>
-
-        <div className="flex items-center gap-1 rounded-md border border-border p-1" role="group" aria-label="Results to show">
-          {([5, 10] as TopK[]).map((k) => (
-            <button
-              key={k}
-              type="button"
-              onClick={() => onTopKChange(k)}
-              className={`h-9 min-w-[64px] rounded px-3 font-mono text-sm font-medium transition-colors ${
-                topK === k ? 'bg-optical-dim text-optical' : 'text-text-muted hover:text-text-primary'
-              }`}
-              aria-pressed={topK === k}
-            >
-              Top-{k}
-            </button>
-          ))}
-        </div>
       </div>
 
       <div className="mt-6">
