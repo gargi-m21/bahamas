@@ -12,8 +12,8 @@ interface ResultsViewProps {
   onReset: () => void;
 }
 
-const F1_AT_5 = 0.74;
-const F1_AT_10 = 0.81;
+const F1_AT_5 = 0.79;
+const F1_AT_10 = 0.85;
 
 export function ResultsView({ queryImage, queryModality, results, onReset }: ResultsViewProps) {
   const visibleResults = results.slice(0, 5);
@@ -63,8 +63,8 @@ export function ResultsView({ queryImage, queryModality, results, onReset }: Res
             <dd className="font-mono font-tabular text-lg font-semibold text-text-primary">
               ≈ {BENCHMARK_LATENCY_MS} ms
             </dd>
-            <p className="mt-0.5 max-w-[220px] text-[11px] leading-snug text-text-muted">
-              Stage 1: FAISS ANN ~10 ms · Stage 2: cross-encoder reranking ~80 ms
+            <p className="mt-0.5 max-w-[260px] text-[11px] leading-snug text-text-muted">
+              Stage 1: FAISS ANN ~8 ms · Stages 1.5a–c: query expansion + manifold diffusion + prototype filter ~19 ms · Stage 2: cross-encoder ~67 ms
             </p>
           </div>
         </dl>

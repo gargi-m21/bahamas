@@ -5,7 +5,7 @@ interface Stat {
 
 const STATS: Stat[] = [
   { value: '9', label: 'Same- & cross-modal retrieval directions' },
-  { value: '≈90ms', label: 'Average retrieval latency, two-stage pipeline' },
+  { value: '≈94ms', label: 'Average retrieval latency, five-stage pipeline' },
   { value: 'F1@5 / F1@10', label: 'Cross-modal scored with extra weight' },
 ];
 

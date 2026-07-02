@@ -33,12 +33,9 @@ export function ResultCard({ item }: ResultCardProps) {
       </div>
 
       <div className="flex items-center justify-between gap-2 px-3 py-2.5">
-        <div className="min-w-0">
-          <p className="truncate text-xs text-text-muted">{item.caption}</p>
-          <p className="font-mono font-tabular text-sm font-semibold text-text-primary">
-            {item.similarityScore.toFixed(2)}
-          </p>
-        </div>
+        <p className="font-mono font-tabular text-sm font-semibold text-text-primary">
+          {item.similarityScore.toFixed(2)}
+        </p>
         <RelevanceIndicator relevant={item.relevant} />
       </div>
     </div>
